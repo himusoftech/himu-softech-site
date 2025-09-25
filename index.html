@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Himu Softech India Pvt. Ltd. — Digital Ops, Sheets Automation & Dashboards</title>
+  <meta name="description" content="Himu Softech India – software development, dashboards, Google Sheets automation, cloud, and digital transformation." />
+  <meta property="og:title" content="Himu Softech India Pvt. Ltd." />
+  <meta property="og:description" content="We build reliable software, Google Sheets automation, and data dashboards for SMEs, trusts and schools." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="hsti-logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --orange:#f97316; --green:#22c55e;
+      --ink:#111827; --ink-2:#374151; --ink-3:#6b7280;
+      --bg:#ffffff; --panel:#f9fafb; --card:#ffffff; --border:#e5e7eb; --ring:rgba(249,115,22,.25)
+    }
+    /* Base */
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    a{color:#0f766e;text-decoration:none}
+    a:hover{text-decoration:underline}
+    img{max-width:100%;height:auto;display:block}
+    .container{max-width:1180px;margin:0 auto;padding:0 28px}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid var(--border)}
+    .nav{height:70px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand .title{font-weight:800;letter-spacing:.2px;color:var(--ink);font-size:18px}
+    .brand .tag{font-size:12px;color:var(--ink-3)}
+    .nav-links{display:flex;align-items:center;gap:18px}
+    .nav-links a{color:var(--ink);opacity:.9}
+    .btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 16px;font-weight:700;border:1px solid var(--border);background:linear-gradient(180deg,#fff,#f8fafc)}
+    .btn.primary{background:linear-gradient(135deg,var(--orange),var(--green));border:none;color:#052012}
+    .btn:hover{transform:translateY(-1px)}
+
+    /* Mobile menu */
+    #menu-toggle{display:none}
+    .drawer{display:none}
+    .menu-btn{display:none;border:1px solid var(--border);padding:8px 10px;border-radius:10px}
+    @media(max-width:860px){
+      .nav-links{display:none}
+      .menu-btn{display:inline-flex}
+      #menu-toggle:checked ~ .drawer{display:block}
+      .drawer{position:absolute;left:0;right:0;top:70px;background:#ffffff;border-bottom:1px solid var(--border)}
+      .drawer .links{display:grid;gap:6px;padding:14px 20px}
+      .drawer a{padding:10px 12px;border-radius:10px;color:var(--ink)}
+      .drawer a:hover{background:#f3f4f6}
+    }
+
+    /* Hero */
+    .hero{padding:90px 0 60px;background:linear-gradient(180deg,#ffffff,#f8fafc)}
+    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:42px;align-items:center}
+    .eyebrow{color:var(--green);font-weight:800;letter-spacing:.18em;text-transform:uppercase;font-size:12px}
+    h1{font-size:clamp(32px,4.6vw,60px);line-height:1.05;margin:10px 0 12px;color:#0f172a}
+    .lead{font-size:clamp(15px,2vw,18px);color:var(--ink-2);max-width:60ch}
+    .hero-art{aspect-ratio:4/3;border-radius:22px;border:1px solid var(--border);box-shadow:0 12px 30px rgba(2,6,23,.08);background:#fff}
+
+    /* Sections */
+    section{padding:80px 0}
+    .section-title{font-size:clamp(24px,3vw,38px);margin:0 0 10px;color:#0f172a}
+    .section-lead{color:var(--ink-2);margin:0 0 26px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+    @media(max-width:980px){.hero-grid,.grid-3,.grid-2{grid-template-columns:1fr}}
+
+    /* Cards */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 6px 18px rgba(2,6,23,.06)}
+    .tile{padding:20px;position:relative;overflow:hidden}
+    .tile h3{margin:6px 0 6px;color:#0f172a}
+    .badge{position:absolute;top:14px;right:14px;font-size:12px;padding:4px 8px;border-radius:999px;background:#fff7ed;color:#7c2d12;border:1px solid #fdba74}
+
+    /* Timeline */
+    .timeline{position:relative;margin:40px 0;padding-left:30px;border-left:3px solid var(--green)}
+    .timeline .event{margin-bottom:28px;position:relative}
+    .timeline .event::before{content:"";position:absolute;left:-11px;top:4px;width:16px;height:16px;border-radius:50%;background:var(--orange);border:3px solid var(--green)}
+    .timeline .year{font-weight:800;color:#0f172a;margin-right:8px;display:inline-block;min-width:80px}
+    .timeline p{margin:6px 0 0;color:var(--ink-2)}
+
+    /* Forms */
+    form{display:grid;gap:12px}
+    label{font-weight:600;color:#0f172a}
+    input,textarea,select{width:100%;padding:12px 14px;background:#ffffff;border:1px solid var(--border);color:var(--ink);border-radius:12px;outline:none}
+    input:focus,textarea:focus,select:focus{box-shadow:0 0 0 6px var(--ring);border-color:var(--orange)}
+    textarea{min-height:120px;resize:vertical}
+
+    /* Panels */
+    .panel{background:var(--panel);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+
+    /* Footer */
+    footer{padding:26px 0 50px;border-top:1px solid var(--border);background:#ffffff}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:18px}
+    @media(max-width:980px){.footer-grid{grid-template-columns:1fr}}
+      /* Quality visual pieces */
+    .pill{display:flex;flex-direction:column;gap:2px;border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:#fff}
+    .pill strong{color:#0f172a}
+    .pill span{color:var(--ink-3);font-size:13px}
+
+    .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+    .step{display:flex;gap:12px;border:1px solid var(--border);border-radius:12px;padding:14px;background:#fff}
+    .step .num{min-width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--green));color:#052012;font-weight:800}
+    .step h3{margin:0 0 4px}
+    .step p{margin:0;color:var(--ink-2)}
+    @media(max-width:980px){.steps{grid-template-columns:1fr 1fr}.pill{min-height:72px}}
+
+    /* Focus visibility for accessibility */
+    a:focus-visible, button:focus-visible, .btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{outline:3px solid var(--orange);outline-offset:2px;border-radius:10px}
+
+    /* Motion preferences */
+    @media (prefers-reduced-motion: reduce){
+      .btn:hover{transform:none}
+    }
+  </style>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="icon" href="favicon.ico">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div>
+          <div class="title">Himu Softech India</div>
+          <div class="tag">Digitize • Automate • Grow</div>
+        </div>
+      </div>
+      <label for="menu-toggle" class="menu-btn">☰ Menu</label>
+      <input type="checkbox" id="menu-toggle"/>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#quality">Quality</a>
+        <a href="#msme">MSME Solutions</a>
+        <a href="#about">About</a>
+        <a href="#journey">Our Journey</a>
+        <a href="#contact" class="btn primary">Get a proposal</a>
+      </nav>
+      <div class="drawer" role="dialog" aria-label="Mobile Menu">
+        <div class="links container">
+          <a href="#services">Services</a>
+          <a href="#work">Work</a>
+          <a href="#msme">MSME Solutions</a>
+          <a href="#about">About</a>
+          <a href="#journey">Our Journey</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">SOFTWARE • DASHBOARDS • CLOUD</div>
+        <h1>Software that looks as good as it works</h1>
+        <p class="lead">We design clean, multilingual apps and dashboards that teams love to use — with rock‑solid SDMS↔Tally automations and fast delivery.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px">
+          <a href="#contact" class="btn primary">Start a project</a>
+          <a href="#services" class="btn">Explore services</a>
+        </div>
+        <div class="card tile" style="margin-top:18px">
+          <span class="badge">Trusted</span>
+          <h3 style="margin:0">Reliable systems, measurable ROI</h3>
+          <p class="lead" style="margin:4px 0 0;color:var(--ink-2)">Google Sheets‑first back‑offices, dashboards, grievance management, and cloud accounting.</p>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Abstract illustration">
+        <svg viewBox="0 0 600 450" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Decorative">
+          <defs>
+            <linearGradient id="grad1" x1="0" x2="1">
+              <stop offset="0" stop-color="#f97316"/>
+              <stop offset="1" stop-color="#22c55e"/>
+            </linearGradient>
+            <filter id="blur" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="30"/>
+            </filter>
+          </defs>
+          <rect width="600" height="450" rx="24" fill="url(#grad1)" opacity="0.08"/>
+          <circle cx="160" cy="140" r="120" fill="#f97316" opacity="0.25" filter="url(#blur)"/>
+          <circle cx="440" cy="260" r="150" fill="#22c55e" opacity="0.25" filter="url(#blur)"/>
+          <rect x="120" y="110" width="360" height="230" rx="18" fill="#ffffff" stroke="#e5e7eb"/>
+          <rect x="150" y="145" width="300" height="20" rx="10" fill="#e5e7eb"/>
+          <rect x="150" y="180" width="260" height="14" rx="7" fill="#f3f4f6"/>
+          <rect x="150" y="205" width="260" height="14" rx="7" fill="#f3f4f6"/>
+          <rect x="150" y="230" width="260" height="14" rx="7" fill="#f3f4f6"/>
+          <rect x="150" y="270" width="180" height="36" rx="18" fill="url(#grad1)" opacity="0.9"/>
+          <rect x="340" y="270" width="110" height="36" rx="18" fill="#f1f5f9"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+    <section id="services">
+    <div class="container">
+      <h2 class="section-title">Services</h2>
+      <p class="section-lead">End‑to‑end product development with rapid iterations and measurable outcomes.</p>
+      <div class="grid-3">
+        <article class="card tile"><span class="badge">Popular</span><h3>Web Apps & PWAs</h3><p class="lead">React/Node apps, auth, protected routes, role‑based dashboards, and Firebase/Vercel/Railway deployment.</p></article>
+        <article class="card tile"><h3>Google Sheets Automation</h3><p class="lead">Apps Script workflows, data syncing, email/report automation, and Sheets‑as‑DB patterns done right.</p></article>
+        <article class="card tile"><h3>Data Dashboards</h3><p class="lead">Live KPIs, product‑wise and staff‑wise summaries, exports to Excel/PDF, and drill‑down analytics.</p></article>
+        <article class="card tile"><h3>Cloud & DevOps</h3><p class="lead">CI/CD, environment management, secure secrets, and scalable hosting on Railway, Render, or GCP.</p></article>
+        <article class="card tile"><h3>Mobile‑Friendly UI/UX</h3><p class="lead">Clean, accessible design with multilingual support (English • ಕನ್ನಡ • हिंदी • தமிழ்).</p></article>
+        <article class="card tile"><h3>Integrations</h3><p class="lead">Tally, email/SMS gateways, Google APIs, SDMS/ERP exports, and 3rd‑party services.</p></article>
+      </div>
+    </div>
+  </section>
+
+    <section id="quality" class="panel">
+    <div class="container">
+      <h2 class="section-title">Quality & Craft</h2>
+      <p class="section-lead">We ship production‑ready software with modern UX, clear documentation, and reliable operations. Here’s how we keep quality high.</p>
+      <div class="grid-3">
+        <article class="card tile">
+          <h3>Engineering Standards</h3>
+          <ul style="margin:8px 0 0 18px;color:var(--ink-2);line-height:1.8">
+            <li>Code reviews, versioned releases, CI checks</li>
+            <li>TypeScript where helpful; automated tests on core logic</li>
+            <li>API contracts & environment‑secrets hygiene</li>
+          </ul>
+        </article>
+        <article class="card tile">
+          <h3>UX & Accessibility</h3>
+          <ul style="margin:8px 0 0 18px;color:var(--ink-2);line-height:1.8">
+            <li>Design system tokens for spacing, radius, colors</li>
+            <li>Keyboard‑friendly, readable, multilingual UIs</li>
+            <li>Responsive layouts for desktop → mobile</li>
+          </ul>
+        </article>
+        <article class="card tile">
+          <h3>Security‑minded</h3>
+          <ul style="margin:8px 0 0 18px;color:var(--ink-2);line-height:1.8">
+            <li>Role‑based access; least‑privilege principles</li>
+            <li>HTTPS end‑to‑end; rotated API keys/secrets</li>
+            <li>Audit trails on critical actions where required</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="card tile" style="margin-top:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="pill"><strong>Since 2013</strong><span>Delivering production systems</span></div>
+        <div class="pill"><strong>Multilingual</strong><span>English • ಕನ್ನಡ • हिंदी • தமிழ்</span></div>
+        <div class="pill"><strong>MSME‑first</strong><span>Sheets → API → UI</span></div>
+        <div class="pill"><strong>Integrations</strong><span>SDMS ↔ Tally</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="container">
+      <h2 class="section-title">Our Process</h2>
+      <p class="section-lead">Transparent, iterative, and measurable — so you always know what’s shipping next.</p>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><div><h3>Discovery</h3><p>Understand goals, constraints, and ROI; shortlist the smallest useful first release.</p></div></div>
+        <div class="step"><div class="num">2</div><div><h3>Design</h3><p>Wireframes and UX flows; define roles & permissions; confirm data contracts.</p></div></div>
+        <div class="step"><div class="num">3</div><div><h3>Build</h3><p>Implement features in weekly slices with demos; set up CI and environments.</p></div></div>
+        <div class="step"><div class="num">4</div><div><h3>Launch</h3><p>UAT, training, and documentation; logs & dashboards for operations.</p></div></div>
+        <div class="step"><div class="num">5</div><div><h3>Care</h3><p>Support, enhancements, and regular reviews based on real usage.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="container">
+      <h2 class="section-title">Selected Work & Projects</h2>
+      <div class="grid-3">
+        <article class="card tile">
+          <span class="badge">LPG</span>
+          <h3>LPG Suvidha (Daily Operations Platform)</h3>
+          <p class="lead">Delivery updates, godown sales, stock receipts; SDMS comparison and multilingual dashboards. Built with Node/Express + Google Sheets API.</p>
+        </article>
+        <article class="card tile">
+          <span class="badge">Accounting</span>
+          <h3>Cloud Accounting & GST Automation</h3>
+          <p class="lead">Browser‑based billing, GST compute & filing, and SDMS→Tally auto‑upload for zero‑error compliance.</p>
+        </article>
+        <article class="card tile">
+          <span class="badge">Ops</span>
+          <h3>Grievance Management System (GMS)</h3>
+          <p class="lead">Ticketing with unique IDs, assignment & approvals, daily MIS emails, and a clean dashboard.</p>
+          <div style="margin-top:10px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px">
+            <img src="gms-screenshot1.png" alt="GMS Workflow" style="border-radius:12px;border:1px solid rgba(255,255,255,.08)">
+            <img src="gms-screenshot2.png" alt="GMS Emails" style="border-radius:12px;border:1px solid rgba(255,255,255,.08)">
+            <img src="gms-screenshot3.png" alt="GMS MIS" style="border-radius:12px;border:1px solid rgba(255,255,255,.08)">
+          </div>
+          <p style="margin-top:12px"><a class="btn primary" href="Grievance-Management-System.pdf">Download Brochure</a></p>
+        </article>
+      </div>
+      <div class="card tile" style="margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+        <div>
+          <strong>Need a custom dashboard or automation?</strong>
+          <div class="lead" style="margin-top:4px">We can connect your Sheets, build a secure API, and ship a clean UI that your team actually uses.</div>
+        </div>
+        <a href="#contact" class="btn primary">Talk to us</a>
+      </div>
+    </div>
+  </section>
+
+    <section id="about">
+      <h2>About Himu Softech India</h2>
+      <p>Himu Softech India Pvt Ltd was founded in 2013 by <strong>Lokesh Ramdas</strong>, a Computer Science engineer, with a vision to deliver practical, reliable, and affordable software solutions to SMEs, distributors, and community organisations. Over the years, the company has grown into a trusted technology partner for <strong>LPG distributors, IOCL projects, educational institutions, trusts, and MSMEs</strong>.</p>
+      <p>We specialise in <strong>Google Sheets automations</strong>, <strong>data dashboards</strong>, <strong>full‑stack web applications</strong>, and <strong>cloud‑based MSME software</strong>. Our focus is on building tools that are simple, accurate, and deliver clear ROI — from distributor daily ops platforms to grievance management and accounting automation.</p>
+    </section>
+
+    <!-- Our Journey -->
+    <section id="journey">
+      <h2>Our Journey</h2>
+      <div class="timeline">
+        <div class="event"><span class="year">2013</span><p>Company founded by Lokesh Ramdas, Computer Science engineer, with focus on SME software.</p></div>
+        <div class="event"><span class="year">2014</span><p>Launch of <strong>MyTracker</strong>, a vehicle tracking system for all IOCL bottling plants in Karnataka.</p></div>
+        <div class="event"><span class="year">2015</span><p>Early automation projects in billing, stock, and accounting workflows.</p></div>
+        <div class="event"><span class="year">2016</span><p>Launch of <strong>LPG Suvidha</strong>, a delivery application for IOCL distributors, integrated with a payment gateway.</p></div>
+        <div class="event"><span class="year">2018</span><p>Development of <strong>Geo RTD (Round Trip Distance)</strong> for IOCL bottling plants in Karnataka to calculate shortest routes for LPG truck deliveries.</p></div>
+        <div class="event"><span class="year">2019–2022</span><p>Expansion into dashboards and PWAs for SMEs, trusts, and community organisations, enabling remote operations during the pandemic.</p></div>
+        <div class="event"><span class="year">2023</span><p>Rollout of <strong>Cloud Accounting & GST Automation</strong> with SDMS→Tally integration for zero‑error compliance.</p></div>
+        <div class="event"><span class="year">2024</span><p>Introduction of MSME‑focused solutions: multilingual UI systems, grievance management platforms, and secure cloud deployments.</p></div>
+        <div class="event"><span class="year">2025</span><p>Launch of the new <strong>LPG Suvidha (Daily Operations Platform)</strong>, a comprehensive operational hub for LPG distributors covering delivery updates, godown sales, stock receipts, and multilingual live dashboards.</p></div>
+      </div>
+    </section>
+
+    <style>
+      .timeline { position:relative; margin:40px 0; padding-left:30px; border-left:3px solid var(--green); }
+      .timeline .event { margin-bottom:28px; position:relative; }
+      .timeline .event::before { content:""; position:absolute; left:-11px; top:4px; width:16px; height:16px; border-radius:50%; background:var(--orange); border:3px solid var(--green); }
+      .timeline .year { font-weight:700; color:var(--orange); margin-right:8px; display:inline-block; min-width:65px; }
+      .timeline p { margin:6px 0 0; color:#374151; }
+    </style>
+
+    <section id="contact">
+    <div class="container grid-2">
+      <div class="card tile">
+        <h2 class="section-title">Start your project</h2>
+        <p class="section-lead">Share a few details and we’ll get back with a tailored plan and quote.</p>
+        <form id="contactForm" action="https://formspree.io/f/xanpnorv" method="POST">
+          <div class="grid-2">
+            <div>
+              <label for="name">Your name</label>
+              <input id="name" name="name" required />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label for="company">Company</label>
+              <input id="company" name="company" />
+            </div>
+            <div>
+              <label for="budget">Estimated budget</label>
+              <select id="budget" name="budget">
+                <option value="">Select…</option>
+                <option>₹0 – ₹50,000</option>
+                <option>₹50,000 – ₹2,00,000</option>
+                <option>₹2,00,000 – ₹5,00,000</option>
+                <option>₹5,00,000+</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="message">What do you want to build?</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          <!-- Formspree helpers -->
+          <input type="hidden" name="_subject" value="New project inquiry — Himu Softech India" />
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+          <div id="form-status" style="display:none; font-size:14px; color:#0f766e; margin:6px 0 0"></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button class="btn primary" type="submit">Send</button>
+            <span style="font-size:13px;color:#cbd5e1">We’ll reply in 1–2 business days. No spam.</span>
+          </div>
+        </form>
+      </div>
+      <div class="card tile">
+        <h3>Prefer email or phone?</h3>
+        <p class="lead">Reach out directly and we’ll schedule a quick call.</p>
+        <p><strong>Email:</strong> <a href="mailto:support@himusoftech.com">support@himusoftech.com</a></p>
+        <p><strong>Location:</strong> Bengaluru, India</p>
+        <p style="font-size:13px;color:#cbd5e1">Office visits by appointment only.</p>
+      </div>
+    </div>
+  </section>
+      <!-- MSME Solutions -->
+    <section id="msme">
+    <div class="container">
+      <h2 class="section-title">Specialised Software for MSMEs</h2>
+      <p class="section-lead">Lean, reliable systems tailored for Micro, Small & Medium Enterprises—fast deployment, clear ROI, minimal training.</p>
+      <div class="grid-3">
+        <article class="card tile"><h3>Billing & Accounting</h3><p class="lead">Browser invoicing, credit notes, purchase/expenses; GST ledgers; export to Tally.</p></article>
+        <article class="card tile"><h3>Inventory & Orders</h3><p class="lead">Product master, GRN, SO→Delivery→Invoice flow, floor‑stock views.</p></article>
+        <article class="card tile"><h3>GST & Compliance</h3><p class="lead">GSTR‑1/3B working, HSN validation, e‑invoice/e‑waybill options, audit‑ready reports.</p></article>
+        <article class="card tile"><h3>Automations</h3><p class="lead">SDMS→Tally upload, Google Sheets sync, scheduled emails/WhatsApp, MIS dashboards.</p></article>
+        <article class="card tile"><h3>Field PWAs</h3><p class="lead">Delivery apps (OTP/override), Spot DC/Billing for ND sales, offline‑first queue.</p></article>
+        <article class="card tile"><h3>Receivables</h3><p class="lead">Party‑wise outstanding, ageing, interest on delays, payment reconciliation.</p></article>
+      </div>
+      <div class="card tile" style="margin-top:16px">
+        <h3>Why Himu Softech for MSMEs</h3>
+        <ul style="margin:8px 0 0 18px;color:#cbd5e1;line-height:1.8">
+          <li>Sheets‑first approach for low friction adoption</li>
+          <li>MVP in weeks; iterate on real data</li>
+          <li>Integrations: Tally, SDMS/ERP, Google Workspace, email/SMS</li>
+          <li>Multilingual UI: English • ಕನ್ನಡ • हिंदी • தமிழ்</li>
+          <li>Clear pricing; no vendor lock‑in</li>
+        </ul>
+        <div style="margin-top:10px"><a href="#contact" class="btn primary">Discuss MSME needs</a></div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:10px">
+          <div class="title">Himu Softech India</div>
+          <div class="tag">Designed and developed by M/s Himu SofTech India Pvt Ltd.</div>Designed and developed by M/s Himu SofTech India Pvt Ltd.</div>
+          </div>
+        </div>
+        <div style="font-size:13px;color:#cbd5e1">For support contact <a href="mailto:support@himusoftech.com">support@himusoftech.com</a></div>
+      </div>
+      <div>
+        <div style="font-weight:700;margin-bottom:8px">Quick links</div>
+        <div><a href="#services">Services</a></div>
+        <div><a href="#work">Work</a></div>
+        <div><a href="#msme">MSME Solutions</a></div>
+        <div><a href="#contact">Contact</a></div>
+      </div>
+      <div>
+        <div style="font-weight:700;margin-bottom:8px">Social</div>
+        <div><a href="#" aria-disabled="true">LinkedIn</a></div>
+        <div><a href="#" aria-disabled="true">GitHub</a></div>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // AJAX submit to Formspree for inline success without leaving the page
+    (function(){
+      const form = document.getElementById('contactForm');
+      if(!form) return;
+      form.addEventListener('submit', async function(e){
+        e.preventDefault();
+        const status = document.getElementById('form-status');
+        if(status){ status.style.display = 'block'; status.style.color = '#6b7280'; status.textContent = 'Sending…'; }
+        try{
+          const data = new FormData(form);
+          const res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' }});
+          if(res.ok){
+            if(status){ status.style.color = '#16a34a'; status.textContent = 'Thanks! We\'ll get back to you shortly.'; }
+            form.reset();
+          } else {
+            const msg = 'Something went wrong. Please email support@himusoftech.com';
+            if(status){ status.style.color = '#b91c1c'; status.textContent = msg; }
+          }
+        }catch(err){
+          if(status){ status.style.color = '#b91c1c'; status.textContent = 'Network error. Please try again or email support@himusoftech.com'; }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
